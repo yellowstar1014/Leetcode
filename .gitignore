@@ -1,3 +1,7 @@
 # Compiled source #
 ###################
 *.class
+.idea
+out/
+*.iml
+README.md
