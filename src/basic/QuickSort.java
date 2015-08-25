@@ -5,12 +5,10 @@ package src.basic;
  */
 public class QuickSort implements Sorter{
     public void sort(int[] array, int start, int end) {
+        if (start >= end) return;
         int index = partition(array, start, end);
-        swap(array, start, index);
-        if (index > start + 1)
-            sort(array, start, index - 1);
-        if (index + 1 < end)
-            sort(array, index + 1, end);
+        sort(array, start, index - 1);
+        sort(array, index + 1, end);
     }
 
     public void sort(int[] array) {
@@ -21,15 +19,32 @@ public class QuickSort implements Sorter{
         int pivot = array[start];
         int l = start + 1;
         int r = end;
-        while (l < r) {
-            while (array[l] < pivot) l++;
-            while (array[r] >= pivot) r--;
-            if (l < r) {
+        while (l <= r) {
+            while (l <= r && array[l] < pivot) l++;
+            while (l <= r && array[r] > pivot) r--;
+            if (l <= r) {
                 swap(array, l, r);
                 l++;
                 r--;
             }
         }
+        swap(array, start, r);
+        return r;
+    }
+
+    private int partition2(int[] array, int start, int end) {
+        int pivot = array[start];
+        int l = start;
+        int r = end + 1;
+        while (true) {
+            while (array[++l] < pivot)
+                if (l == end) break;
+            while (array[--r] > pivot)
+                if (r == start) break;
+            if (l >= r) break;
+            swap(array, l, r);
+        }
+        swap(array, start, r);
         return r;
     }
 
