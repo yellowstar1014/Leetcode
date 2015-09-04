@@ -19,11 +19,12 @@ public class MaxPointsOnLine {
         // (y2 - y1) = a (x2 - x1)  -> a = (y2 - y1) / (x2 - x1)
         // if (x3, y3) on the same line , y3 = ax3 + b
         // (y3 - y1) / (x3 - x1) = (y2 - y1) / (x2 - x1) = a
-        // let a = y0 / x0; y0,x0 are integer, we can use x0, y0 as key of each line
+        // let a = y0 / x0; y0, x0 are integer, we can use x0, y0 as key of each line
+        // y0, x0 don't have any GCD
         if (points == null || points.length == 0) return 0;
         HashMap<Long, Integer> map = new HashMap<>();
         int overlap = 0;
-        int max = 1;
+        int max = 0;
         for (int i = 0; i < points.length; i++) {
             for (int j = i + 1; j < points.length; j++) {
                 int x = points[j].x - points[i].x;
@@ -37,16 +38,17 @@ public class MaxPointsOnLine {
                     x = x / a;
                     y = y / a;
                 }
-                long key = (x << 32) | y;
+                long key = x;
+                key = key << 32 | y;
                 if (map.containsKey(key)) {
                     map.put(key, map.get(key) + 1);
                 }
-                else map.put(key, 2);
+                else map.put(key, 1);
             }
+            max = Math.max(max, overlap + 1);
             for (int v : map.values()) {
-                max = Math.max(max, v);
+                max = Math.max(max, v + overlap + 1);
             }
-            max += overlap;
             map.clear();
             overlap = 0;
         }
