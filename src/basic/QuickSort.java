@@ -8,7 +8,7 @@ import java.util.Random;
 public class QuickSort implements Sorter{
     public void sort(int[] array, int start, int end) {
         if (start >= end) return;
-        int index = partition(array, start, end);
+        int index = partition4(array, start, end);
         sort(array, start, index - 1);
         sort(array, index + 1, end);
     }
@@ -48,22 +48,16 @@ public class QuickSort implements Sorter{
         return r;
     }
 
-
-    private int partition2(int[] array, int start, int end) {
+    private int partition4(int[] array, int start, int end) {
         int pivot = array[start];
-        int l = start + 1;
-        int r = end;
-        while (l <= r) {
-            while (l <= r && array[l] < pivot) l++;
-            while (l <= r && array[r] > pivot) r--;
-            if (l <= r) {
-                swap(array, l, r);
-                l++;
-                r--;
-            }
+        int i = start + 1;
+        int j = i;
+        while (j <= end) {
+            if (array[j] < pivot) swap(array, i++, j++);
+            else j++;
         }
-        swap(array, start, r);
-        return r;
+        swap(array, start, i - 1);
+        return i - 1;
     }
 
     // without swap pivot and r
@@ -80,6 +74,23 @@ public class QuickSort implements Sorter{
             swap(array, l, r);
         }
         //swap(array, start, r);
+        return r;
+    }
+
+    private int partition2(int[] array, int start, int end) {
+        int pivot = array[start];
+        int l = start + 1;
+        int r = end;
+        while (l <= r) {
+            while (l <= r && array[l] < pivot) l++;
+            while (l <= r && array[r] > pivot) r--;
+            if (l <= r) {
+                swap(array, l, r);
+                l++;
+                r--;
+            }
+        }
+        swap(array, start, r);
         return r;
     }
 

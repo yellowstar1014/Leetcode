@@ -5,7 +5,7 @@ package src.basic;
  */
 public class SortTester {
     public static void main(String[] args) {
-        int[] array = {2,1,3,4,5,9,5,9,5,8,8};
+        int[] array = {6,6,9,4,3,1,3,5,6,3,2,7,7,7};
         Sorter sorter = new QuickSort();
         sorter.sort(array);
         print(array);
