@@ -8,7 +8,7 @@ import java.util.Random;
 public class QuickSort implements Sorter{
     public void sort(int[] array, int start, int end) {
         if (start >= end) return;
-        int index = partition4(array, start, end);
+        int index = partition(array, start, end);
         sort(array, start, index - 1);
         sort(array, index + 1, end);
     }
