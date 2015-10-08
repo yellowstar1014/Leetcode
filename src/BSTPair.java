@@ -1,5 +1,6 @@
 package src;
 
+import java.util.NoSuchElementException;
 import java.util.Stack;
 
 /**
@@ -21,8 +22,46 @@ public class BSTPair {
         n2.left = n21;
         n2.right = n22;
         BSTPair bstPair = new BSTPair();
-        int[] ret = bstPair.findPair(root, 17);
+        //int[] ret = bstPair.findPair(root, 17);
+        System.out.println(bstPair.predessor(root, 12).val);
     }
+    public TreeNode predessor(TreeNode root, int value) {
+        TreeNode cur = root;
+        while (cur != null) {
+            if (value < cur.val) {
+                cur = cur.left;
+            } else if (value > cur.val) {
+                cur = cur.right;
+            } else {
+                break;
+            }
+        }
+        if (cur == null) throw new NoSuchElementException();
+        if (cur.left != null) {
+            return findMax(cur.left);
+        } else {
+            TreeNode ancestor = root;
+            TreeNode pre = null;
+            while (ancestor != cur) {
+                if (value > ancestor.val) {
+                    pre = ancestor;
+                    ancestor = ancestor.right;
+                }
+                else {
+                    ancestor = ancestor.left;
+                }
+            }
+            return pre;
+        }
+    }
+
+    private TreeNode findMax(TreeNode root) {
+        while (root.right != null) {
+            root = root.right;
+        }
+        return root;
+    }
+
     public int[] findPair(TreeNode root, int k) {
         int[] ret = new int[2];
         if (root == null) return ret;

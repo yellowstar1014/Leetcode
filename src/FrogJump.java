@@ -1,9 +1,7 @@
 package src;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.PriorityQueue;
-import java.util.Set;
 
 /**
  * Created by yellowstar on 10/2/15.
@@ -13,8 +11,8 @@ public class FrogJump {
     //        = A[i] else
     public static void main(String[] args) {
         FrogJump frogJump = new FrogJump();
-        int[] A = {3, 6, 12, 9, 4, 7, 10};
-        int ret = frogJump.jump2(12, 3, A);
+        int[] A = {3, 6, 0, 9, 4, 7, 10};
+        int ret = frogJump.jump2(13, 3, A);
         System.out.println(ret);
     }
     public int jump(int x, int d, int[] A) {
@@ -44,6 +42,8 @@ public class FrogJump {
         int[] max = new int[num + 1];
         Arrays.fill(min, -1);
         Arrays.fill(max, - 1);
+        max[num] = x;
+        min[num] = x;
         boolean[] isRelated = new boolean[num];
         for (int i = 0; i < A.length; i++) {
             int j = A[i] / (d + 1);
