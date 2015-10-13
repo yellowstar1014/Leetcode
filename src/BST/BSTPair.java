@@ -1,6 +1,10 @@
-package src;
+package src.BST;
 
+import src.TreeNode;
+
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -23,9 +27,51 @@ public class BSTPair {
         n2.right = n22;
         BSTPair bstPair = new BSTPair();
         //int[] ret = bstPair.findPair(root, 17);
-        System.out.println(bstPair.predessor(root, 12).val);
+        //System.out.println(bstPair.predecessor(root, 12).val);
+        int[] preorder = {10, 5, 1, 7, 40, 50};
+        //print(bstPair.contructBST(preorder));
+        System.out.println(bstPair.isValidBST(preorder));
     }
-    public TreeNode predessor(TreeNode root, int value) {
+
+    private int preIndex = 0;
+    public boolean isValidBST(int[] preorder) {
+        int len = preorder.length;
+        if (len == 0) return false;
+        if (len == 1) return true;
+        int lower = -1;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < len; i++) {
+            if (lower > -1 && lower > preorder[i]) {
+                return false;
+            }
+            while (!stack.empty() && stack.peek() < preorder[i]) {
+                lower = stack.pop();
+            }
+            stack.push(preorder[i]);
+        }
+        return true;
+    }
+
+    public TreeNode contructBST(int[] preorder) {
+        int len = preorder.length;
+        if (len == 0) return null;
+        return constructHelper(Integer.MIN_VALUE, Integer.MAX_VALUE, preorder);
+    }
+
+    public TreeNode constructHelper(int min, int max, int[] preorder) {
+        if (preIndex == preorder.length) return null;
+        if (preorder[preIndex] > min && preorder[preIndex] < max) {
+            TreeNode root = new TreeNode(preorder[preIndex++]);
+            TreeNode left = constructHelper(min, root.val, preorder);
+            TreeNode right = constructHelper(root.val, max, preorder);
+            root.left = left;
+            root.right = right;
+            return root;
+        }
+        return null;
+    }
+
+    public TreeNode predecessor(TreeNode root, int value) {
         TreeNode cur = root;
         while (cur != null) {
             if (value < cur.val) {
@@ -38,8 +84,9 @@ public class BSTPair {
         }
         if (cur == null) throw new NoSuchElementException();
         if (cur.left != null) {
-            return findMax(cur.left);
+            return findMax(cur.left); // the max element in the left sub-tree
         } else {
+            // the first left ancestor (value is in its right subtree)
             TreeNode ancestor = root;
             TreeNode pre = null;
             while (ancestor != cur) {
@@ -98,6 +145,34 @@ public class BSTPair {
                 ret[1] = cur2.val;
                 return ret;
             }
+        }
+    }
+
+    public static void print(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            boolean flag = false;
+            while (size > 0) {
+                TreeNode cur = queue.poll();
+                if (cur != null)
+                    System.out.print(cur.val + " ");
+                else
+                    System.out.print("# ");
+                if (cur == null) {
+                    queue.add(null);
+                    queue.add(null);
+                }
+                else {
+                    if (cur.left != null || cur.right != null) flag = true;
+                    queue.add(cur.left);
+                    queue.add(cur.right);
+                }
+                size--;
+            }
+            System.out.println();
+            if (!flag) break;
         }
     }
 }

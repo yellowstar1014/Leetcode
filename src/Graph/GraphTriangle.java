@@ -1,4 +1,4 @@
-package src;
+package src.Graph;
 
 /**
  * Created by yellowstar on 10/4/15.

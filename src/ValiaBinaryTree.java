@@ -49,6 +49,6 @@ public class ValiaBinaryTree {
             map.put(node, cur);
             node = p;
         }
-        return cur;
+        return parent;
     }
 }
