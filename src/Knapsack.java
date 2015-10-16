@@ -11,7 +11,9 @@ public class Knapsack {
         int[] v = {5, 1, 7, 4};
         int[] u = {6, 4, 8, 6};
         Knapsack knapsack = new Knapsack();
-        int ret = knapsack.knapsack(v, u, 11);
+        //int ret = knapsack.knapsack(v, u, 11);
+        int[] A = {3,4,8,5};
+        int ret = knapsack.knapsack2(10, A);
         System.out.println(ret);
     }
     public int knapsack(int[] v, int[] u, int W) {
@@ -35,5 +37,26 @@ public class Knapsack {
             pre = cur;
         }
         return cur[W];
+    }
+
+    public int knapsack2(int m, int[] A) {
+        int len = A.length;
+        int[][] dp = new int[2][m + 1];
+        // i = 0;
+        for (int k = 0; k < m + 1; k++) {
+            dp[0][k] = A[0] <= k ? A[0] : 0;
+        }
+        // from i = 1
+        for (int i = 1; i < len; i++) {
+            dp[i%2][0] = 0;
+            for (int k = 1; k < m + 1; k++) {
+                if (k - A[i] >= 0) {
+                    dp[i%2][k] = Math.max(dp[(i-1)%2][k], dp[(i-1)%2][k - A[i]] + A[i]);
+                } else {
+                    dp[i%2][k] = dp[(i-1)%2][k];
+                }
+            }
+        }
+        return dp[(len - 1)%2][m];
     }
 }
