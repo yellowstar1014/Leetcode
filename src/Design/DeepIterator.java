@@ -62,4 +62,9 @@ public class DeepIterator<T> implements Iterator<T>{
         }
         throw new NullPointerException("Already reach the end of collection");
     }
+
+    @Override
+    public void remove() {
+
+    }
 }

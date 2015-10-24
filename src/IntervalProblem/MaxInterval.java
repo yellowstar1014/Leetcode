@@ -1,4 +1,4 @@
-package src;
+package src.IntervalProblem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +9,6 @@ import java.util.List;
 class MaxInterval {
     private List<Interval> intervals = new ArrayList<>();
     private int max = 0;
-    class Interval {
-        int start;
-        int end;
-        public Interval(int start, int end) {
-            this.start = start;
-            this.end = end;
-        }
-    }
 
     public static void main (String[] args) {
         MaxInterval maxInterval = new MaxInterval();

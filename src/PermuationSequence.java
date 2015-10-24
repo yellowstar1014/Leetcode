@@ -11,7 +11,7 @@ import java.util.List;
 public class PermuationSequence {
     public static void main(String[] args) {
         PermuationSequence permuationSequence = new PermuationSequence();
-        BigInteger ret = permuationSequence.sequenceOrder("baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        BigInteger ret = permuationSequence.sequenceOrder("ba");
         System.out.println(ret);
     }
     public BigInteger sequenceOrder(String s) {

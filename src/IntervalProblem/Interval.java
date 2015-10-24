@@ -1,4 +1,4 @@
-package src;
+package src.IntervalProblem;
 
 /**
  * Created by yellowstar on 7/22/15.
