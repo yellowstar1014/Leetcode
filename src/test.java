@@ -5,12 +5,13 @@ package src;
  */
 public class test {
     public static void main(String[] args) {
-        System.out.println(Integer.MAX_VALUE + 1);
-        System.out.println(Integer.MIN_VALUE - 1);
-        int a =1;
-        for (int i = 0 ;i < 32; i++) {
-            a *= 2;
-            System.out.println(a);
-        }
+        int i = 200;
+        int j = 100;
+        long l = (long)i << 32 | j;
+        System.out.println(l);
+        i = (int)(l >> 32);
+        j = (int)l;
+        System.out.println(i);
+        System.out.println(j);
     }
 }

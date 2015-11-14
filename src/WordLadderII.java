@@ -1,9 +1,6 @@
 package src;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by yellowstar on 8/25/15.
@@ -11,63 +8,74 @@ import java.util.Set;
 public class WordLadderII {
     public static void main(String[] args) {
         WordLadderII wordLadderII = new WordLadderII();
-        String start = "a";
-        String end = "c";
+        String start = "hot";
+        String end = "dog";
         Set<String> dict = new HashSet<>();
-        dict.add("a");
-        dict.add("b");
-        dict.add("c");
+        dict.add("hot");
+        dict.add("cog");
+        dict.add("dog");
+        dict.add("tot");
+        dict.add("hog");
+        dict.add("hop");
+        dict.add("pot");
+        dict.add("dot");
         List<List<String>> rets = wordLadderII.findLadders(start, end, dict);
     }
 
-    public List<List<String>> findLadders(String start, String end, Set<String> dict) {
-        List<List<String>> rets = new ArrayList<>();
-        List<List<String>> starts = new ArrayList<>();
-        List<String> oneStart = new ArrayList<>();
-        oneStart.add(start);
-        starts.add(oneStart);
-        bfs(starts, end, dict, rets);
+    public List<List<String>> findLadders(String beginWord, String endWord, Set<String> wordList) {
+        List<List<String>> rets = new LinkedList<>();
+        List<List<String>> paths = new LinkedList<>();
+        List<String> path = new LinkedList<>();
+        path.add(beginWord);
+        paths.add(path);
+        bfs(paths, endWord, wordList, rets);
         return rets;
     }
 
-    public void bfs(List<List<String>> starts, String end, Set<String> dict, List<List<String>> rets) {
-        int size = starts.size();
-        if (size == 0) return;
-        boolean hasRet = false;
-        List<String> removes = new ArrayList<>();
-        List<List<String>> newStarts = new ArrayList<>();
-        for (int j = 0; j < size; j++) {
-            List<String> start = starts.get(j);
-            int oneSize = start.size();
-            String cur = start.get(oneSize - 1);
-            char[] cs = cur.toCharArray();
-            boolean found = false;
-            for (int i = 0; i < cs.length; i++) {
-                for (char c = 'a'; c <= 'z'; c++) {
-                    if (cs[i] == c) continue;
-                    cs[i] = c;
-                    String next = new String(cs);
-                    cs[i] = cur.charAt(i);
-                    if (next.equals(end)) {
-                        List<String> ret = new ArrayList<>(start);
-                        ret.add(next);
-                        rets.add(ret);
-                        found = true;
-                        hasRet = true;
-                        break;
-                    }
-                    else if (!hasRet && dict.contains(next)) {
-                        List<String> newStart = new ArrayList<>(start);
-                        newStart.add(next);
-                        newStarts.add(newStart);
-                        removes.add(next);
-                    }
+    private void bfs(List<List<String>> paths, String end, Set<String> wordList, List<List<String>> rets) {
+        List<List<String>> updates = new LinkedList<>();
+        List<String> removes = new LinkedList<>();
+        boolean getEnd = false;
+        for (List<String> path : paths) {
+            String cur = path.get(path.size() - 1);
+            List<String> nexts = expand(cur, wordList, end);
+            for (String next : nexts) {
+                List<String> update = new LinkedList<>(path);
+                if (next.equals(end)) {
+                    update.add(next);
+                    rets.add(update);
+                    getEnd = true;
+                } else if (!getEnd && wordList.contains(next)) {
+                    update.add(next);
+                    updates.add(update);
+                    removes.add(next);
                 }
-                if (found) break;
             }
         }
-        if (hasRet) return;
-        dict.removeAll(removes);
-        bfs(newStarts, end, dict, rets);
+        if (getEnd || updates.size() == 0) return;
+        wordList.removeAll(removes);
+        bfs(updates, end, wordList, rets);
+    }
+
+    private List<String> expand(String cur, Set<String> wordList, String end) {
+        List<String> nexts = new LinkedList<>();
+        char[] cs = cur.toCharArray();
+        for (int i = 0; i < cs.length; i++) {
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (cs[i] == c) continue;
+                cs[i] = c;
+                String next = new String(cs);
+                cs[i] = cur.charAt(i);
+                if (cur.equals(end)) {
+                    nexts.clear();
+                    nexts.add(next);
+                    return nexts;
+                }
+                if (wordList.contains(next)) {
+                    nexts.add(next);
+                }
+            }
+        }
+        return nexts;
     }
 }

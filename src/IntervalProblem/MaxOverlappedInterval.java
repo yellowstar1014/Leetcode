@@ -21,14 +21,18 @@ public class MaxOverlappedInterval {
     public static void main(String[] args) {
         MaxOverlappedInterval maxOverlappedInterval = new MaxOverlappedInterval();
         List<int[]> list = new ArrayList<>();
-        int[] s1 = {1, 4};
-        int[] s2 = {2, 4};
-        int[] s3 = {3, 5};
-        int[] s4 = {4, 5};
+        int[] s1 = {1, 3};
+        int[] s2 = {2, 5};
+        int[] s3 = {4, 6};
+        int[] s4 = {5, 10};
+        int[] s5 = {7, 7};
+        int[] s6 = {8, 8};
         list.add(s1);
         list.add(s2);
         list.add(s3);
         list.add(s4);
+        list.add(s5);
+        list.add(s6);
         int[] ret =  maxOverlappedInterval.maxOverlappedInterval(list);
     }
 
@@ -54,12 +58,15 @@ public class MaxOverlappedInterval {
         });
         int[] overlap = new int[len];
         Map<Integer, Integer> map = new HashMap<>();
+        int start = 0;
+        int stop = 0;
         for (Point point : points) {
             if (point.isStart) {
-                update(map);
-                map.put(point.id, 0);
+                start++;
+                map.put(point.id, stop);
             } else {
-                overlap[point.id] = map.remove(point.id);
+                overlap[point.id] = start - 1 - map.get(point.id);
+                stop++;
             }
         }
         int max = 0;
@@ -71,11 +78,5 @@ public class MaxOverlappedInterval {
             }
         }
         return segments.get(id);
-    }
-
-    private void update(Map<Integer, Integer>map) {
-        for (Integer key : map.keySet()) {
-            map.put(key, map.get(key) + 1);
-        }
     }
 }

@@ -1,5 +1,7 @@
 package src.pal;
 
+import src.TrieTree.Trie;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +20,16 @@ public class PalindromePair {
         dict.add("ba");
         dict.add("cb");
         List<String[]> rets = findPair(dict);
+        for (String[] ret : rets) {
+            System.out.println(ret[0] + "  " + ret[1]);
+        }
+        rets = findPair(dict);
+        System.out.println();
+        for (String[] ret : rets) {
+            System.out.println(ret[0] + "  " + ret[1]);
+        }
     }
+
     public static List<String[]> findPair(Set<String> dict) {
         List<String[]> rets = new LinkedList<>();
         for (String s : dict) {
@@ -65,4 +76,5 @@ public class PalindromePair {
         }
         return true;
     }
+
 }

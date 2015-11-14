@@ -116,7 +116,7 @@ public class PrintTree {
             List<List<TreeNode>> newPaths = new ArrayList<>();
             boolean hasNextLevel = false;
             for (List<TreeNode> path : paths) {
-                TreeNode cur = path.get(path.size());
+                TreeNode cur = path.get(path.size() - 1);
                 if (cur.left == null && cur.right == null) {
                     newPaths.add(path);
                     continue;

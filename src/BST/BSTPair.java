@@ -28,9 +28,11 @@ public class BSTPair {
         BSTPair bstPair = new BSTPair();
         //int[] ret = bstPair.findPair(root, 17);
         //System.out.println(bstPair.predecessor(root, 12).val);
-        int[] preorder = {10, 5, 1, 7, 40, 50};
+        int[] preorder = {10, 5, 1, 0, 7, 2, 40, 50};
         //print(bstPair.contructBST(preorder));
         System.out.println(bstPair.isValidBST(preorder));
+        TreeNode root1 = bstPair.contructBST(preorder);
+        TreeNode root2 = bstPair.buildeBST(preorder);
     }
 
     private int preIndex = 0;
@@ -51,6 +53,35 @@ public class BSTPair {
         }
         return true;
     }
+
+    public TreeNode buildeBST(int[] preorder) {
+        int len = preorder.length;
+        if (len == 0) return null;
+        TreeNode p = null;
+        boolean isLeft = true;
+        TreeNode root = new TreeNode(preorder[0]);
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        for (int i = 1; i < len; i++) {
+            if (p != null && p.val > preorder[i]) {
+                throw new RuntimeException();
+            }
+            while (!stack.empty() && stack.peek().val < preorder[i]) {
+                p = stack.pop();
+                isLeft = false;
+            }
+            TreeNode cur = new TreeNode(preorder[i]);
+            if (isLeft) {
+                stack.peek().left = cur;
+            } else {
+                p.right = cur;
+                isLeft = true;
+            }
+            stack.push(cur);
+        }
+        return root;
+    }
+
 
     public TreeNode contructBST(int[] preorder) {
         int len = preorder.length;
